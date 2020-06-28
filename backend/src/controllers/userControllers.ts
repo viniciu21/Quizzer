@@ -23,18 +23,34 @@ export const signupUser = async(req: Request, resp: Response): Promise<Response>
     const newUser:User = req.body;
     newUser.points = 0;
 
-    const isDuplicade = getRepository(User).findOne({username: newUser.username});
+    try {
+        const isDuplicade = await getRepository(User).findOne({username: newUser.username});
 
-    if(isDuplicade) return resp.status(400).json({mensage: "This user already exists."});
+        if(isDuplicade){
+            console.log('entrou aqui ');
+            return resp.status(400).json({mensage: "This user already exists."});
+        }
 
-    const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(10);
 
-    newUser.password = await bcrypt.hash(newUser.password, salt);
+        newUser.password = await bcrypt.hash(newUser.password, salt);
 
-    const user = getRepository(User).create(newUser);
-    const userSaved = await getRepository(User).save(user);
-
-    return resp.status(200).json(userSaved).status(200).json({mensage: "user save with success"});
+        const user = await getRepository(User).create(newUser);
+        const userSaved = await getRepository(User).save(user);
+        const token:string = jwt.sign({id: userSaved.id}, process.env.SECRET_KEY || "contrate-me", {
+            expiresIn: 6000,
+        })
+        return resp.status(200)
+        .header('Bearer-token', token)
+        .json(
+            {
+                userSaved,
+                mensage: "User saved successfully."
+            }
+        );
+    }catch(erro){
+        return resp.status(400).json({mensage: "Something went wrong"})
+    }
 };
 
 export const putUser = async (req: Request,res: Response): Promise<Response> => {
