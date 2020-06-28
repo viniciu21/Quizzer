@@ -1,0 +1,11 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": "5432",
+    "username": "postgres",
+    "password": "abc987abc",
+    "database": "Quizzer",
+    "entities": ["dist/entity/**/*.js"],
+    "logging": false,
+    "synchronize": true
+  }
