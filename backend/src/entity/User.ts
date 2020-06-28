@@ -1,22 +1,19 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
-import { METHODS } from 'http';
-
-
+import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
-class User {
+class User{
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  user: string;
+  username: string;
 
   @Column()
   password: string;
-  
+
   @Column()
   points: number;
 
-}
+};
 
 export default User;

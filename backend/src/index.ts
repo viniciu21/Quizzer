@@ -2,7 +2,10 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 
-import router from './Routes/routes';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import router from './routes/routes';
 
 import { createConnection } from 'typeorm';
 
