@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 import { getRepository } from 'typeorm';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -38,20 +38,29 @@ export const signupUser = async(req: Request, resp: Response): Promise<Response>
         const user = await getRepository(User).create(newUser);
         const userSaved = await getRepository(User).save(user);
         const token:string = jwt.sign({id: userSaved.id}, process.env.SECRET_KEY || "contrate-me", {
-            expiresIn: 6000,
-        })
-        return resp.status(200)
-        .header('Bearer-token', token)
-        .json(
-            {
-                userSaved,
-                mensage: "User saved successfully."
-            }
-        );
+            expiresIn: 60 * 60,
+        });
+        return resp.header('Bearer-token', token).json(userSaved);
     }catch(erro){
         return resp.status(400).json({mensage: "Something went wrong"})
     }
 };
+
+export const signinUser = async (req:Request, resp:Response):Promise<Response> => {
+    const user = req.body;
+    const isValidUsername = await getRepository(User).findOne({username: user.username});
+    if(!isValidUsername) return resp.status(400).json({mensage: "Email or password invalid"});
+    const isValidPassword = await bcrypt.compare(user.password, isValidUsername.password);
+    if(!isValidPassword) return resp.status(400).json({mensage: "Email or password invalid"});
+
+    //Generate token
+
+    const token:string = jwt.sign({id: isValidUsername.id}, process.env.SECRET_KEY || "contrate-me", {
+        expiresIn: 60 * 60,
+    })
+
+    return resp.header('Bearer-token', token).json({token,isValidUsername})
+}
 
 export const putUser = async (req: Request,res: Response): Promise<Response> => {
     const user = await getRepository(User).findOne(req.params.id);
@@ -67,3 +76,14 @@ export const deleteUser = async (req: Request, res: Response): Promise<Response>
     const deletedUser = await getRepository(User).delete(req.params.id);
     return res.json(deletedUser);
 };
+
+export const getProfileForUser = async (req: Request, resp: Response) => {
+    const user = await getRepository(User).findOne({id: req.userId});
+
+    if(!user){
+        return resp.status(400).json({mensage: "User not found."});
+    }
+
+    return resp.json(user);
+
+}
