@@ -3,11 +3,15 @@ import jwt from 'jsonwebtoken';
 
 
 
-interface Payload{
+interface Payload{ //payload type
     id: number,
     iat: number,
     exp: number
-}
+};
+
+/**
+ * This middleware recive the token and return the id of user.
+*/
 
 export const TokenValidation = (req: Request, resp:Response, next: NextFunction) => {
     try {
@@ -23,4 +27,4 @@ export const TokenValidation = (req: Request, resp:Response, next: NextFunction)
     }catch(error){
         return resp.status(400).json(error);
     }
-}
+};
