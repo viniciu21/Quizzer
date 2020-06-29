@@ -1,6 +1,8 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useContext } from 'react';
 
-import axios from 'axios';
+
+import { context } from '../../context/contextAuth';
+
 // import { Container } from './styles';
 
 const Signup= () => {
@@ -8,28 +10,12 @@ const Signup= () => {
   const [username, setUsername] = useState('');
 
   const [password, setPassword] = useState('');
+  
+  const {handleAuth} = useContext(context);
 
-
-  const signinPost = async (e:FormEvent) => {
-    
-    e.preventDefault();
-
-
-    const {data: {token}} = await axios({
-      baseURL: 'http://localhost:3333/api/auth/signup',
-      method: "POST",
-      data:{ username, password},
-    });
-    
-    console.log(token);
-
-    setPassword('');
-    setUsername('');
-
-  };
   return (
     <div>
-      <form onSubmit={(e) => signinPost(e)}>
+      <form onSubmit={(e) => handleAuth(e, "signup", username, password)}>
         <p>username</p>
         <input type="text" placeholder="Bote um username..." 
           value={username}
