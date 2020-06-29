@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import axios from 'axios';
+
+import { context } from '../../context/contextAuth';
 
 // import { Container } from './styles';
 
@@ -13,20 +15,30 @@ interface User{
 
 const Profile: React.FC = () => {
 
-    const [users, setUsers] = useState<[User]>();
+    const [user, setUser] = useState<User>();
+
+    const {handleLogout} = useContext(context);
 
     useEffect(() =>{
         (async () => {
-            const users = await axios({
-                baseURL: 'http://localhost:3333/api/auth/users',
+            const user = await axios({
+                baseURL: 'http://localhost:3333/api/auth/profile',
                 method: "GET",
             })
-            console.log(users.data);
-            setUsers(users.data);
+            console.log(user.data);
+            setUser(user.data);
         })()
     },[])
   return (
-  <h1>{users && users[0].username}</h1>
+    <div>
+        <div>
+            <h1>ID :{user?.id}</h1>
+            <h1>USERNAME: {user?.username}</h1>
+            <h1>Points: {user?.points}</h1>
+        </div>
+        <button onClick={handleLogout}>Logout</button>
+    </div>
+    
   );
 }
 

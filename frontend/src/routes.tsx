@@ -1,18 +1,37 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React,{useContext} from 'react';
+import { context } from './context/contextAuth';
+import { Switch, Route, RouteProps, Redirect } from 'react-router-dom';
 import InicialPage from './pages/InicialPage';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile/';
 
+interface props extends RouteProps{
+    isPrivate?: boolean
+}
+
+
+function CustomRoute({ isPrivate, ...rest }:props) {
+    const { loading, isAuth } = useContext(context);
+  
+    if (loading) {
+      return <h1>Loading...</h1>;
+    }
+  
+    if (isPrivate && !isAuth) {
+      return <Redirect to="/signin" />
+    }
+  
+    return <Route {...rest} />;
+}
 
 export default function Routes():React.ReactElement{
     return(
         <Switch>
-            <Route path="/" exact component={InicialPage}/>
-            <Route path="/signin" component={Signin}/>
-            <Route path="/signup" component={Signup}/>
-            <Route path="/profile" component={Profile}/>
+            <CustomRoute path="/" exact component={InicialPage}/>
+            <CustomRoute path="/signin" component={Signin}/>
+            <CustomRoute path="/signup" component={Signup}/>
+            <CustomRoute isPrivate={true} path="/profile" component={Profile}/>
         </Switch>
     );
 }

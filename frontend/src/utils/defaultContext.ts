@@ -21,5 +21,6 @@ export const defaultContext = {
     
         history.push('/');
     },
-    message:undefined
+    mensage:undefined,
+    handleLogout:() => {}
 };

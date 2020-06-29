@@ -10,11 +10,15 @@ const Signin= () => {
 
   const [password, setPassword] = useState('');
 
-  const {handleAuth, message} = useContext(context);
+  const {handleAuth, mensage} = useContext(context);
 
   return (
     <div>
-      <form onSubmit={(e) => handleAuth(e, 'signin', username, password)}>
+      <form onSubmit={(e) => {
+          handleAuth(e, 'signin', username, password)
+          setPassword('');
+          setUsername('');
+        }}>
         <p>username</p>
         <input type="text" placeholder="Bote um username..." 
           value={username}
@@ -24,9 +28,9 @@ const Signin= () => {
         <input type="password" placeholder="Coloque uma senha..."
           value={password} onChange={e => setPassword(e.target.value)}
         />
-        <button type="submit">Click para cadrastar</button>
+        <button type="submit">Click para logar</button>
       </form>
-      <p>{message}</p>
+      <p>{mensage}</p>
     </div>
   );
 }

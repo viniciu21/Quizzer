@@ -11,7 +11,8 @@ interface Userctx{
     isAuth?: boolean,
     loading?: boolean,
     handleAuth(event?:FormEvent, typeOfAuth?:string, username?: string, password?: string):Promise<void>,
-    message?: string
+    mensage?: string,
+    handleLogout():void
 }
 
 export const context = createContext<Userctx>(defaultContext);
@@ -22,7 +23,7 @@ export const ContextProvider: React.FC = ({children}) => {
 
     const [loading, setLoading] = useState(true);
 
-    const [message, setMessage] = useState('qualquer coisa');
+    const [mensage, setMensage] = useState(undefined);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -49,14 +50,21 @@ export const ContextProvider: React.FC = ({children}) => {
             setIsauth(true);
             axios.defaults.headers.Auth =`Bearer ${token}`;
             history.push('/profile');
+            setMensage(undefined);
         }catch(erro){
-            console.log(erro.response);
-            setMessage(erro.response.data.mensage);
+            setMensage(erro.response.data.mensage);
         }            
     }
 
+    const handleLogout = () => {
+        setIsauth(false);
+        localStorage.removeItem('token');
+        axios.defaults.headers.Authorization = undefined;
+        history.push('/');
+    }
+
     return(
-        <context.Provider value={{isAuth, loading, handleAuth, message}}>
+        <context.Provider value={{isAuth, loading, handleAuth, mensage, handleLogout}}>
             {children}
         </context.Provider>
     )
