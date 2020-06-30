@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 
 import { context } from '../../context/contextAuth';
+import { Link } from 'react-router-dom';
 
 // import { Container } from './styles';
 
@@ -37,6 +38,7 @@ const Profile: React.FC = () => {
             <h1>Points: {user?.points}</h1>
         </div>
         <button onClick={handleLogout}>Logout</button>
+        <Link to='/settings'>Modificar Usuário</Link>
     </div>
     
   );

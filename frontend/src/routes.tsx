@@ -32,6 +32,7 @@ export default function Routes():React.ReactElement{
             <CustomRoute path="/signin" component={Signin}/>
             <CustomRoute path="/signup" component={Signup}/>
             <CustomRoute isPrivate={true} path="/profile" component={Profile}/>
+            {/* <CustomRoute isPrivate={true} path '' */}
         </Switch>
     );
 }
