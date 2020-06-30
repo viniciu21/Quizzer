@@ -25,4 +25,4 @@ app.use(express.json());
 app.use('/api/auth',router);
 
 app.listen(3333);
-console.log('Serve on in port', 33333);
+console.log('Serve on in port', 3333);

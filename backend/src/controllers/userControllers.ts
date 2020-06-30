@@ -1,4 +1,4 @@
-import { Request, Response} from 'express';
+import { Request, Response, json} from 'express';
 import { getRepository } from 'typeorm';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -22,9 +22,9 @@ export const getUsers = async(req: Request, resp: Response): Promise<Response> =
  * getUser is a function that returns one user by her id.
  */
 
-export const getUser = async (req: Request,res: Response): Promise<Response> => {
+export const getUser = async (req: Request,resp: Response): Promise<Response> => {
     const results = await getRepository(User).findOne(req.params.id);
-    return res.json(results);
+    return resp.json(results);
 };
 
 /**
@@ -42,7 +42,7 @@ export const signupUser = async(req: Request, resp: Response): Promise<Response>
         //Ensures that the username is not repeated
         const isDuplicade = await getRepository(User).findOne({username: newUser.username});
         if(isDuplicade){
-            return resp.status(400).json({mensage: "This user already exists."});
+            return resp.status(400).json({ mensage: "error"});
         }
 
         //Generates the salt and encrypts the user's password
@@ -51,14 +51,14 @@ export const signupUser = async(req: Request, resp: Response): Promise<Response>
 
         //Create and save the user
         const user = await getRepository(User).create(newUser);
-        const userSaved = await getRepository(User).save(user);
+        const userSaved:User = await getRepository(User).save(user);
 
         //Create the token
         const token:string = jwt.sign({id: userSaved.id}, process.env.SECRET_KEY || "contrate-me", {
             expiresIn: 60 * 60,
         });
 
-        return resp.header('Bearer-token', token).json(userSaved);
+        return resp.header('Bearer', token).json({token,userSaved});
     }catch(erro){
         return resp.status(400).json({mensage: "Something went wrong"})
     }
@@ -72,9 +72,13 @@ export const signinUser = async (req:Request, resp:Response):Promise<Response> =
     //Checks user
 
     const reqUser = req.body;
-    const user = await getRepository(User).findOne({username: reqUser.username});
-    if(!user) return resp.status(400).json({mensage: "Email or password invalid"});
-    const isValidPassword = await bcrypt.compare(user.password, user.password);
+    const user = await getRepository(User).findOne({username: req.body.username});
+    console.log(user || 'lala');
+    if(!user) {
+        console.log('lala');
+        return resp.status(400).json({mensage: "Email or password invalid"})
+    };
+    const isValidPassword = await bcrypt.compare(req.body.password, user.password);
     if(!isValidPassword) return resp.status(400).json({mensage: "Email or password invalid"});
 
     //Generate token
@@ -83,30 +87,50 @@ export const signinUser = async (req:Request, resp:Response):Promise<Response> =
         expiresIn: 60 * 60,
     })
 
-    return resp.header('Bearer-token', token).json({token,user})
+    return resp.header('Bearer', token).json({token,user})
 }
 
 /**
  * Modify a user by her id
 */
 
-export const putUser = async (req: Request,res: Response): Promise<Response> => {
+export const putUser = async (req: Request,resp: Response): Promise<Response> => {
     const user = await getRepository(User).findOne(req.params.id);
 
-    if (!user) return res.json({msg: 'Not user found'});
+    if (!user) return resp.json({msg: 'Not user found'});
 
-    getRepository(User).merge(user, req.body);
+    const duplicatedUsername = await getRepository(User).find({username: req.body.username});
+
+    if(duplicatedUsername.length !== 0) return resp.status(400).json({
+        mensage: "There is already a user with that username"
+    })
+
+    if(user.username === req.body.username) return resp.status(400).json({
+        mensage: "Enter a different username"
+    })
+
+    const password = req.body.password;
+
+    const salt = await bcrypt.genSalt(10);
+
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    getRepository(User).merge(user, {
+        username: req.body.username,
+        password: hashPassword,
+        points: req.body.points
+    });
     const results = await getRepository(User).save(user);
-    return res.json(results);
+    return resp.json(results);
 };
 
 /**
  * Delete a user by her id
 */
 
-export const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+export const deleteUser = async (req: Request, resp: Response): Promise<Response> => {
     const deletedUser = await getRepository(User).delete(req.params.id);
-    return res.json(deletedUser);
+    return resp.json(deletedUser);
 };
 
 /**

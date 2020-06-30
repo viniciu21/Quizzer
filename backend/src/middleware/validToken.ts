@@ -15,14 +15,15 @@ interface Payload{ //payload type
 
 export const TokenValidation = (req: Request, resp:Response, next: NextFunction) => {
     try {
-        const token = req.header("Bearer-token");
-        console.log(token);
+        const Bearertoken = req.header("Auth");
 
-        if(!token) {return resp.status(400).json({mensage: "Access Denied"});}
-        const payload = jwt.verify(token, process.env.SECRET_KEY || "contrate-me") as Payload;
+        const token = Bearertoken?.split(" ");
+
+        if(!token) {return resp.status(400).json(new Error("Acess deneied"));}
+        const payload = jwt.verify(token[1], process.env.SECRET_KEY || "contrate-me") as Payload;
 
         req.userId = payload.id;
-
+        console.log(req.userId);
         next();
     }catch(error){
         return resp.status(400).json(error);

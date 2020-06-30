@@ -1,5 +1,9 @@
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 
+/**
+ * Defines a entity for your database
+ */
+
 @Entity()
 class User{
   @PrimaryGeneratedColumn()
