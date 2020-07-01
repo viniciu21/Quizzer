@@ -2,7 +2,7 @@ import React, { createContext, useState, FormEvent, useEffect } from 'react';
 // import { Container } from './styles';
 
 
-import { api, quizApi } from '../Api/api';
+import { api } from '../Api/api';
 
 import history from '../history';
 
@@ -20,7 +20,7 @@ export interface Quests {
   type: string,
   question: string,
   correct_answer: string,
-  incorrect_answers: string[]
+  incorrect_answers: Array<string>
 }
 
 export interface Userctx {
@@ -28,13 +28,10 @@ export interface Userctx {
   loading?: boolean,
   mensage?: string,
   userAuth?: User,
-  isSubmited?: Boolean,
-  quizQuests: Quests[],
   handleAuth(event?: FormEvent, typeOfAuth?: string, username?: string, password?: string): Promise<void>,
   handleLogout(): void,
   handleModify(event?: FormEvent, username?: string, password?: string, id?: number): Promise<void>,
   handleDelete(event?: FormEvent, id?: number): Promise<void>,
-  handleQuiz(event: FormEvent, category: string, amount: string, difficulty: string, type: string): Promise<void>,
 
 }
 
@@ -49,11 +46,6 @@ export const ContextProvider: React.FC = ({ children }) => {
   const [mensage, setMensage] = useState(undefined);
 
   const [userAuth, setUserAuth] = useState();
-
-  const [isSubmited, setIsSubmited] = useState(false);
-
-  const [quizQuests, setQuizQuests] = useState<Quests[]>([]);
-
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -125,37 +117,11 @@ export const ContextProvider: React.FC = ({ children }) => {
     history.push('/');
   }
 
-  const handleQuiz = async (e: FormEvent, category: string, amount: string, difficulty: string, type: string) => {
-    const chefParams = {
-      category,
-      difficulty,
-      type
-    }
-
-    const params: object = Object.assign({ amount },
-      chefParams.category !== '' ? { category: chefParams.category } : {},
-      chefParams.difficulty !== '' ? { difficulty: chefParams.difficulty } : {},
-      chefParams.type !== '' ? { type: chefParams.type } : {},
-    )
-
-    e.preventDefault();
-
-    try {
-      const { data: { results } } = await quizApi.get('api.php', {
-        params: params
-      });
-      setQuizQuests(results);
-      setIsSubmited(true);
-    } catch (erro) {
-      console.log(erro);
-    }
-  }
-
   return (
     <context.Provider value={{
-      isAuth, loading, isSubmited, handleAuth,
-      mensage, handleLogout, userAuth, quizQuests,
-      handleModify, handleDelete, handleQuiz
+      isAuth, loading, handleAuth,
+      mensage, handleLogout, userAuth,
+      handleModify, handleDelete,
     }}>
       {children}
     </context.Provider>

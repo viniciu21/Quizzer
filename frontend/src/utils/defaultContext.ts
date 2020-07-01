@@ -8,8 +8,6 @@ export const defaultContext: Userctx = {
   isAuth: undefined,
   loading: undefined,
   mensage: undefined,
-  isSubmited: false,
-  quizQuests: [],
   handleAuth: async (e: FormEvent, typeOfAuth: string, username: string, password: string) => {
     e.preventDefault();
 
@@ -47,7 +45,4 @@ export const defaultContext: Userctx = {
       method: "DELETE"
     });
   },
-  handleQuiz: async () => {
-
-  }
 };

@@ -9,32 +9,32 @@ import ModifyUser from '../pages/ModifyUser';
 import Quiz from '../pages/Quiz';
 
 interface props extends RouteProps {
-    isPrivate?: boolean
+  isPrivate?: boolean
 }
 
 function CustomRoute({ isPrivate, ...rest }: props) {
-    const { loading, isAuth } = useContext(context);
+  const { loading, isAuth } = useContext(context);
 
-    if (loading) {
-        return <h1>Loading...</h1>;
-    }
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
-    if (isPrivate && !isAuth) {
-        return <Redirect to="/signin" />
-    }
+  if (isPrivate && !isAuth) {
+    return <Redirect to="/signin" />
+  }
 
-    return <Route {...rest} />;
+  return <Route {...rest} />;
 }
 
 export default function Routes(): React.ReactElement {
-    return (
-        <Switch>
-            <CustomRoute path="/" exact component={InicialPage} />
-            <CustomRoute path="/signin" component={Signin} />
-            <CustomRoute path="/signup" component={Signup} />
-            <CustomRoute isPrivate={true} path="/profile" component={Profile} />
-            <CustomRoute isPrivate={true} path="/modify" component={ModifyUser} />
-            <CustomRoute isPrivate={true} path="/quiz" component={Quiz} />
-        </Switch>
-    );
+  return (
+    <Switch>
+      <CustomRoute path="/" exact component={InicialPage} />
+      <CustomRoute path="/signin" component={Signin} />
+      <CustomRoute path="/signup" component={Signup} />
+      <CustomRoute isPrivate={true} path="/profile" component={Profile} />
+      <CustomRoute isPrivate={true} path="/modify" component={ModifyUser} />
+      <CustomRoute isPrivate={true} path="/quiz" component={Quiz} />
+    </Switch>
+  );
 }

@@ -1,21 +1,14 @@
-import React, { useState, ChangeEvent, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import QuizGame from '../../components/QuizGame';
-import { context } from '../../context/contextAuth';
+import { contextQuiz } from '../../context/contextQuiz';
 // import { Container } from './styles';
 
 const Quiz: React.FC = () => {
 
-  const [amount, setAmount] = useState('10');
   const [category, setCategory] = useState('');
-  const [difficulty, setDifficulty] = useState('');
   const [type, setType] = useState('');
 
-  const { handleQuiz, isSubmited } = useContext(context);
-
-  const onlyNumbers = (e: ChangeEvent<HTMLInputElement>) => {
-    const numberInput = e.target.value.replace(/\D/, '');
-    setAmount(numberInput);
-  }
+  const { handleQuiz, isSubmited, amount, onlyNumbers, difficulty, handleDifficulty } = useContext(contextQuiz);
 
   return (
     <div>
@@ -57,7 +50,7 @@ const Quiz: React.FC = () => {
               <option value="32">Entertainment: Cartoon &amp; Animations</option>
             </select>
             <br />
-            <select name="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+            <select name="difficulty" value={difficulty} onChange={(e) => handleDifficulty(e)}>
               <option value="">Any Difficulty</option>
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>

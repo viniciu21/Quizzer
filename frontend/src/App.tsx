@@ -3,15 +3,18 @@ import { Router } from 'react-router-dom';
 import Routes from './routes/routes';
 import history from './history';
 import { ContextProvider } from './context/contextAuth';
+import { ContextQuizProvider } from './context/contextQuiz';
 
 function App() {
-    return (
-        <ContextProvider>
-            <Router history={history}>
-                <Routes />
-            </Router>
-        </ContextProvider>
-    )
+  return (
+    <ContextQuizProvider>
+      <ContextProvider>
+        <Router history={history}>
+          <Routes />
+        </Router>
+      </ContextProvider>
+    </ContextQuizProvider>
+  )
 }
 
 export { App };
