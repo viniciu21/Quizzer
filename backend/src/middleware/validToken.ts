@@ -15,7 +15,7 @@ interface Payload{ //payload type
 
 export const TokenValidation = (req: Request, resp:Response, next: NextFunction) => {
     try {
-        const Bearertoken = req.header("Auth");
+        const Bearertoken = req.header("Authorization");
 
         const token = Bearertoken?.split(" ");
 
