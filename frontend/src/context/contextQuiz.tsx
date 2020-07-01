@@ -18,6 +18,7 @@ export interface Quests {
   category: string,
   type: string,
   question: string,
+  difficulty: string,
   correct_answer: string,
   incorrect_answers: Array<string>
 }
