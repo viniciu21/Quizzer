@@ -26,6 +26,7 @@ const Profile: React.FC = () => {
           baseURL: "http://localhost:3333/api/auth/profile",
           method: "GET"
         })
+        console.log(data);
         setUser(data);
 
       } catch (erro) {
@@ -37,9 +38,9 @@ const Profile: React.FC = () => {
   return (
     <div>
       <div>
-        <h1>Id :{userAuth?.id || user?.id}</h1>
-        <h1>Username : {userAuth?.username || user?.username}</h1>
-        <h1>Points : {userAuth?.points || user?.points}</h1>
+        <h1>Id :{user?.id || userAuth?.id}</h1>
+        <h1>Username : {user?.username || userAuth?.username}</h1>
+        <h1>Points : {user?.points || userAuth?.points}</h1>
       </div>
       <button onClick={handleLogout}>Sair</button>
       <br />

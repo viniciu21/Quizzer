@@ -1,13 +1,21 @@
 import React, { useContext, useState, useEffect } from 'react';
 
 import { contextQuiz } from '../../context/contextQuiz';
+
+import { context } from '../../context/contextAuth';
+
+import { api } from '../../Api/api';
 import history from '../../history';
+
+
 
 // import { Container } from './styles';
 
 const QuizGame: React.FC = () => {
 
   const { quizQuests, amount } = useContext(contextQuiz);
+
+  const { userAuth } = useContext(context);
 
   const [index, setIndex] = useState(0);
 
@@ -35,10 +43,13 @@ const QuizGame: React.FC = () => {
       setOverQuestionarie(true);
       return;
     }
-    const answer = wrongQuests[index].map(value => value);
-    answer.push(correctAnswer[index])
-    const sortedAnswers = answer.sort(() => Math.random() - .5);
-    setAnswers(sortedAnswers);
+    if (overQuestionarie === false) {
+      const answer = wrongQuests[index].map(value => value);
+      answer.push(correctAnswer[index])
+      const sortedAnswers = answer.sort(() => Math.random() - .5);
+      setAnswers(sortedAnswers);
+    }
+    return;
   }, [index]);
 
   useEffect(() => {
@@ -65,7 +76,7 @@ const QuizGame: React.FC = () => {
       return;
     }
     if (value === correctAnswer[index]) {
-      // console.log('Acertei', typeOfDifficulty[index])
+      console.log('Acertei', typeOfDifficulty[index])
       typeOfDifficulty[index] === 'hard' ?
         setPoints(points + 10) : typeOfDifficulty[index] === 'medium' ?
           setPoints(points + 5) : setPoints(points + 3);
@@ -76,8 +87,16 @@ const QuizGame: React.FC = () => {
     }
   }
 
-  const handleSave = () => {
-
+  const handleSave = async () => {
+    try {
+      await api.put('http://localhost:3333/api/auth/saveQuiz', {
+        id: userAuth?.id,
+        points: points,
+      });
+      history.push('/profile');
+    } catch (erro) {
+      console.log(erro.response.data)
+    }
   }
 
   return (
@@ -95,7 +114,7 @@ const QuizGame: React.FC = () => {
         overQuestionarie ?
           <div>
             <p>Sua pontuação foi de {points}, Parabens</p>
-            <button onClick={() => console.log('salvei')}>salvar</button>
+            <button onClick={() => handleSave()}>salvar</button>
           </div>
           : ''
       }

@@ -45,7 +45,7 @@ export const ContextProvider: React.FC = ({ children }) => {
 
   const [mensage, setMensage] = useState(undefined);
 
-  const [userAuth, setUserAuth] = useState();
+  const [userAuth, setUserAuth] = useState<User>();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -54,6 +54,10 @@ export const ContextProvider: React.FC = ({ children }) => {
       setIsauth(true);
     }
     setLoading(false);
+    (async () => {
+      const { data } = await api.get('http://localhost:3333/api/auth/profile')
+      setUserAuth(data)
+    })()
   }, []);
 
   const handleAuth = async (e: FormEvent, typeOfAuth: string, username: string, password: string) => {
