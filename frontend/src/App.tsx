@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
-import Routes from './routes';
+import Routes from './routes/routes';
 import history from './history';
 import { ContextProvider } from './context/contextAuth';
 

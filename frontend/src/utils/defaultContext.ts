@@ -1,8 +1,9 @@
 import history from '../history';
 import axios from 'axios';
 import {FormEvent} from 'react';
+import { Userctx } from '../context/contextAuth';
 
-export const defaultContext = {
+export const defaultContext:Userctx = {
     
     isAuth: undefined,
     loading: undefined,
@@ -17,10 +18,35 @@ export const defaultContext = {
             
         localStorage.setItem('token', JSON.stringify(token));
     
-        axios.defaults.headers.Auth =`Bearer ${token}`;
+        axios.defaults.headers.Authorization =`Bearer ${token}`;
     
         history.push('/');
     },
     mensage:undefined,
-    handleLogout:() => {}
+    handleLogout:() => {},
+    userAuth: {
+        id: 0,
+        username: '',
+        password: '',
+        points: 0
+    },
+    handleModify: async (e:FormEvent, username?: string, password?: string, id?:number) =>{
+        const data = axios({
+            baseURL: "http://localhost:3333/api/auth/users",
+            method: "PUT",
+            params: { id },
+            data: {username, password}
+        })
+        console.log(data);
+    },
+    handleDelete: async (e:FormEvent, id?:number) => {
+        e.preventDefault();
+        const {data} = await axios({
+            baseURL:`http://localhost:3333/api/auth/users/${id}`,
+            method: "DELETE"
+        });
+        console.log(data);
+
+        
+    }
 };

@@ -1,18 +1,29 @@
 import React, {createContext, useState, FormEvent, useEffect} from 'react';
 // import { Container } from './styles';
 
-import axios from 'axios';
+
+import {api} from '../Api/api';
 
 import history from '../history';
 
 import {defaultContext} from '../utils/defaultContext';
 
-interface Userctx{
+export interface Userctx{
     isAuth?: boolean,
     loading?: boolean,
     handleAuth(event?:FormEvent, typeOfAuth?:string, username?: string, password?: string):Promise<void>,
     mensage?: string,
-    handleLogout():void
+    handleLogout():void,
+    userAuth ?: User,
+    handleModify(event?:FormEvent, username?: string, password?: string, id?:number):Promise<void>,
+    handleDelete(event?:FormEvent, id?:number):Promise<void>
+}
+
+export interface User{
+    id?: number,
+    username?: string,
+    password?: string,
+    points?: number,
 }
 
 export const context = createContext<Userctx>(defaultContext);
@@ -25,47 +36,80 @@ export const ContextProvider: React.FC = ({children}) => {
 
     const [mensage, setMensage] = useState(undefined);
 
+    const [userAuth, setUserAuth] = useState();
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            axios.defaults.headers.Auth= `Bearer ${JSON.parse(token)}`;
+            api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`;
             setIsauth(true);
         }
         setLoading(false);
     },[]);
 
-    if(loading){
-        return <h1>loading</h1>
-    }
-
     const handleAuth = async(e:FormEvent, typeOfAuth: string, username: string, password: string) => {
         e.preventDefault();
         try{
-            const {data:{token}} = await axios({
+            const {data,data:{token}} = await api({
                 baseURL: `http://localhost:3333/api/auth/${typeOfAuth}`,
                 method: "POST",
                 data:{ username, password},
             });
             localStorage.setItem('token', JSON.stringify(token));
             setIsauth(true);
-            axios.defaults.headers.Auth =`Bearer ${token}`;
-            history.push('/profile');
+            api.defaults.headers.Authorization =`Bearer ${token}`;
+            setUserAuth(data.user);
             setMensage(undefined);
+            history.push('/profile');
         }catch(erro){
             setMensage(erro.response.data.mensage);
         }            
     }
 
+    const handleModify = async (e:FormEvent, username?: string, password?: string, id?:number) =>{
+        e.preventDefault();
+        try{
+            await api({
+            baseURL: `http://localhost:3333/api/auth/users/${id}`,
+            method: "PUT",
+            data: {username, password}
+        });
+        handleLogout();
+        }catch(erro){
+            console.log(erro.response.data.mensage);
+        }
+        handleLogout();
+    }
+
+    const handleDelete = async (e:FormEvent, id?:number) => {
+        e.preventDefault();
+        try{
+            await api({
+                baseURL:`http://localhost:3333/api/auth/users/${id}`,
+                method: "DELETE"
+            });
+            handleLogout();
+        }catch(erro){
+            setMensage(erro.response.data.mensage);
+        }
+    }
+    
+
     const handleLogout = () => {
         setIsauth(false);
         localStorage.removeItem('token');
-        axios.defaults.headers.Authorization = undefined;
+        api.defaults.headers.Authorization = undefined;
         history.push('/');
     }
 
     return(
-        <context.Provider value={{isAuth, loading, handleAuth, mensage, handleLogout}}>
+        <context.Provider value={{
+            isAuth, loading, 
+            handleAuth, mensage, 
+            handleLogout, userAuth, 
+            handleModify, handleDelete
+        }}>
             {children}
         </context.Provider>
     )
-}
+};

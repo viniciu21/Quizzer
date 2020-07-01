@@ -1,46 +1,55 @@
 import React, { useEffect, useState, useContext } from 'react';
 
-import axios from 'axios';
-
 import { context } from '../../context/contextAuth';
 import { Link } from 'react-router-dom';
+import { api } from '../../Api/api';
 
 // import { Container } from './styles';
 
-interface User{
-    id: number,
-    username: string,
-    password: string,
-    points: number
+interface User {
+  id: number,
+  username: string,
+  password: string,
+  points: number
 }
 
 const Profile: React.FC = () => {
 
-    const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User>();
 
-    const {handleLogout} = useContext(context);
+  const { handleLogout, userAuth } = useContext(context);
 
-    useEffect(() =>{
-        (async () => {
-            const user = await axios({
-                baseURL: 'http://localhost:3333/api/auth/profile',
-                method: "GET",
-            })
-            console.log(user.data);
-            setUser(user.data);
-        })()
-    },[])
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await api({
+          baseURL: "http://localhost:3333/api/auth/profile",
+          method: "GET"
+        })
+        setUser(data);
+
+      } catch (erro) {
+        console.log(erro.response.data);
+      }
+    })()
+  }, [])
+
   return (
     <div>
-        <div>
-            <h1>ID :{user?.id}</h1>
-            <h1>USERNAME: {user?.username}</h1>
-            <h1>Points: {user?.points}</h1>
-        </div>
-        <button onClick={handleLogout}>Logout</button>
-        <Link to='/settings'>Modificar Usuário</Link>
+      <div>
+        <h1>Id :{userAuth?.id || user?.id}</h1>
+        <h1>Username : {userAuth?.username || user?.username}</h1>
+        <h1>Points : {userAuth?.points || user?.points}</h1>
+      </div>
+      <button onClick={handleLogout}>Sair</button>
+      <br />
+      <Link to='/modify'>Modificar Usuário</Link>
+      <br />
+      <Link to='/quiz'>Começar um novo quizz</Link>
+      <br />
+      <Link to='/modify'>Ver ranqueamento</Link>
     </div>
-    
+
   );
 }
 
