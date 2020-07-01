@@ -146,5 +146,27 @@ export const getProfileForUser = async (req: Request, resp: Response) => {
     }
 
     return resp.json(user);
+}
 
+interface RequiredUser {
+    id: number,
+    points: number
+}
+
+export const putPointIntoUsers = async (req: Request, resp: Response) => {
+    const userRequired: RequiredUser = req.body;
+
+    const user = await getRepository(User).findOne({ id: userRequired.id });
+
+    if (!user) return resp.status(400).json({ mensage: "Something has going wrong" });
+
+    const newPoints = userRequired.points + user.points;
+
+    await getRepository(User).merge(user, {
+        points: newPoints
+    });
+
+    const results = await getRepository(User).save(user);
+
+    return resp.json(results);
 }

@@ -1,22 +1,22 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 /**
  * Defines a entity for your database
  */
 
 @Entity()
-class User{
-  @PrimaryGeneratedColumn()
-  id: number;
+class User {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  username: string;
+    @Column()
+    username: string;
 
-  @Column()
-  password: string;
+    @Column()
+    password: string;
 
-  @Column()
-  points: number;
+    @Column()
+    points: number;
 
 };
 
