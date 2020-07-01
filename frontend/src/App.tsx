@@ -4,14 +4,14 @@ import Routes from './routes/routes';
 import history from './history';
 import { ContextProvider } from './context/contextAuth';
 
-function App(){
+function App() {
     return (
         <ContextProvider>
             <Router history={history}>
-                <Routes/>
+                <Routes />
             </Router>
         </ContextProvider>
-  )
+    )
 }
 
-export {App};
+export { App };

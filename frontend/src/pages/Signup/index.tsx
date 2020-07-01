@@ -5,13 +5,13 @@ import { context } from '../../context/contextAuth';
 
 // import { Container } from './styles';
 
-const Signup= () => {
+const Signup = () => {
 
   const [username, setUsername] = useState('');
 
   const [password, setPassword] = useState('');
-  
-  const {handleAuth, mensage} = useContext(context);
+
+  const { handleAuth, mensage } = useContext(context);
 
   return (
     <div>
@@ -23,7 +23,7 @@ const Signup= () => {
 
         <p>username</p>
 
-        <input type="text" placeholder="Bote um username..." 
+        <input type="text" placeholder="Bote um username..."
           value={username}
           onChange={e => setUsername(e.target.value)}
         />
@@ -37,7 +37,7 @@ const Signup= () => {
         <button type="submit" >Click para cadrastar</button>
 
       </form>
-      
+
       <p>{mensage}</p>
     </div>
   );

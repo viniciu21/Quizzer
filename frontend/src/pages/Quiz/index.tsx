@@ -1,44 +1,20 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useContext } from 'react';
 import QuizGame from '../../components/QuizGame';
-import { quizApi } from '../../Api/api';
+import { context } from '../../context/contextAuth';
 // import { Container } from './styles';
 
 const Quiz: React.FC = () => {
 
-  const [isSubmited, setIsSubmited] = useState(false);
   const [amount, setAmount] = useState('10');
   const [category, setCategory] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [type, setType] = useState('');
 
-  const chefParams = {
-    category,
-    difficulty,
-    type
-  }
-
-  const params: object = Object.assign({ amount },
-    chefParams.category !== '' ? { category: chefParams.category } : {},
-    chefParams.difficulty !== '' ? { difficulty: chefParams.difficulty } : {},
-    chefParams.type !== '' ? { type: chefParams.type } : {},
-  )
+  const { handleQuiz, isSubmited } = useContext(context);
 
   const onlyNumbers = (e: ChangeEvent<HTMLInputElement>) => {
     const numberInput = e.target.value.replace(/\D/, '');
     setAmount(numberInput);
-  }
-
-  const handleQuiz = async (e: FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const data = await quizApi.get('api.php', {
-        params: params
-      });
-      console.log(data);
-    } catch (erro) {
-      console.log(erro);
-    }
   }
 
   return (
@@ -47,10 +23,9 @@ const Quiz: React.FC = () => {
       <p>Você Terá 12 minutos para completa-lo</p>
       <p>Quanto mais repostas certas melhor será sua pontuação </p>
       <p>Crie seu quiz</p>
-      <button onClick={() => setIsSubmited(true)}>começar</button>
       {
         isSubmited ? <QuizGame /> :
-          <form onSubmit={(e) => handleQuiz(e)}>
+          <form onSubmit={(e) => handleQuiz(e, category, amount, difficulty, type)}>
             <input type="text" name="amount" placeholder="Quantidade de questões"
               value={amount} onChange={(e) => onlyNumbers(e)} />
             <br />
