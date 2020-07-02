@@ -18,6 +18,8 @@ class User {
     @Column()
     points: number;
 
+    @Column()
+    time: number;
 };
 
 export default User;

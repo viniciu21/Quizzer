@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 import User from '../entity/User'; //Entity User
+import { format } from 'path';
 
 /**
  * getUsers is a function that returns all users.
@@ -37,6 +38,7 @@ export const signupUser = async (req: Request, resp: Response): Promise<Response
     //Get new user by the body of request
     const newUser: User = req.body;
     newUser.points = 0;
+    newUser.time = 0;
 
     try {
         //Ensures that the username is not repeated
@@ -150,7 +152,8 @@ export const getProfileForUser = async (req: Request, resp: Response) => {
 
 interface RequiredUser {
     id: number,
-    points: number
+    points: number,
+    time: number
 }
 
 export const putPointIntoUsers = async (req: Request, resp: Response) => {
@@ -162,8 +165,24 @@ export const putPointIntoUsers = async (req: Request, resp: Response) => {
 
     const newPoints = userRequired.points + user.points;
 
+    if (user.time === 0) {
+        const newTime = userRequired.time;
+        await getRepository(User).merge(user, {
+            points: newPoints,
+            time: newTime
+        });
+
+        const results = await getRepository(User).save(user);
+
+        return resp.json(results);
+
+    }
+
+    const newMediaTime = Math.trunc((userRequired.time + user.time) / 2);
+
     await getRepository(User).merge(user, {
-        points: newPoints
+        points: newPoints,
+        time: newMediaTime
     });
 
     const results = await getRepository(User).save(user);
