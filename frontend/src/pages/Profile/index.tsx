@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../../Api/api';
 import { User } from '../../context/contextAuth';
 
-// import { Container } from './styles';
+import { Container, ButtonsConteiner, TextContainer } from './styles';
 
 
 const Profile: React.FC = () => {
@@ -30,25 +30,22 @@ const Profile: React.FC = () => {
   }, [])
 
   return (
-    <div>
-      <div>
-        <h1>Id :{user?.id || userAuth?.id}</h1>
-        <h1>Username : {user?.username || userAuth?.username}</h1>
-        <h1>Points : {user?.points || userAuth?.points}</h1>
-        <h1>Media Times : {user?.time || userAuth?.time}</h1>
-        <h1>Quantidade de questões acertada nivel Dificil: {user?.hard || userAuth?.hard}</h1>
-        <h1>Quantidade de questões acertada nivel Medium: {user?.medium || userAuth?.medium}</h1>
-        <h1>Quantidade de questões acertada nivel Easy: {user?.easy || userAuth?.easy}</h1>
-      </div>
-      <button onClick={handleLogout}>Sair</button>
-      <br />
-      <Link to='/modify'>Modificar Usuário</Link>
-      <br />
-      <Link to='/quiz'>Começar um novo quizz</Link>
-      <br />
-      <Link to='/rank'>Ver ranqueamento</Link>
-    </div>
-
+    <Container>
+      <TextContainer>
+        <span>Username: {user?.username || userAuth?.username}</span>
+        <span>Points: {user?.points || userAuth?.points}</span>
+        <span>Media Times : {user?.time || userAuth?.time}</span>
+        <span>Number of questions answered at Hard level: {user?.hard || userAuth?.hard}</span>
+        <span>Number of questions answered at Medium level: {user?.medium || userAuth?.medium}</span>
+        <span>Number of questions answered at Easy level: {user?.easy || userAuth?.easy}</span>
+      </TextContainer>
+      <ButtonsConteiner>
+        <a onClick={handleLogout}><span>Sair</span></a>
+        <Link to='/modify'><span>Modificar Usuário</span></Link>
+        <Link to='/quiz'><span>Começar um novo quizz</span></Link>
+        <Link to='/rank'><span>Ver ranqueamento</span></Link>
+      </ButtonsConteiner>
+    </Container>
   );
 }
 

@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 
 import { context } from '../../context/contextAuth';
 
-// import { Container } from './styles';
+import { Container, FormContainer, LoginText, Input, ErroMensage } from '../Signin/styles';
 
 const Signup = () => {
 
@@ -14,32 +14,26 @@ const Signup = () => {
   const { handleAuth, mensage } = useContext(context);
 
   return (
-    <div>
-      <form onSubmit={(e) => {
-        handleAuth(e, "signup", username, password);
-        setPassword('');
-        setUsername('');
-      }}>
-
-        <p>username</p>
-
-        <input type="text" placeholder="Bote um username..."
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-
-        <p>password</p>
-
-        <input type="password" placeholder="Coloque uma senha..."
-          value={password} onChange={e => setPassword(e.target.value)}
-        />
-
-        <button type="submit" >Click para cadrastar</button>
-
-      </form>
-
-      <p>{mensage}</p>
-    </div>
+    <Container>
+      <FormContainer>
+        <LoginText> Cadrastar </LoginText>
+        <form onSubmit={(e) => {
+          handleAuth(e, "signup", username, password);
+          setPassword('');
+          setUsername('');
+        }}>
+          <Input type="text" placeholder="Bote um username..."
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+          <Input type="password" placeholder="Coloque uma senha..."
+            value={password} onChange={e => setPassword(e.target.value)}
+          />
+          <Input type="submit" value="Click para cadrastar" />
+        </form>
+        <ErroMensage>{mensage}</ErroMensage>
+      </FormContainer>
+    </Container>
   );
 }
 
