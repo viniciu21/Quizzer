@@ -9,10 +9,11 @@ import history from '../history';
 import { defaultContext } from '../utils/defaultContext';
 
 export interface User {
-  id?: number,
-  username?: string,
-  password?: string,
-  points?: number,
+  id: number,
+  username: string,
+  password: string,
+  points: number,
+  time: number,
 }
 
 export interface Quests {

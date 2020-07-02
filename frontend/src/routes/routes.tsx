@@ -7,6 +7,7 @@ import Signup from '../pages/Signup';
 import Profile from '../pages/Profile/';
 import ModifyUser from '../pages/ModifyUser';
 import Quiz from '../pages/Quiz';
+import Rank from '../pages/Rank';
 
 interface props extends RouteProps {
   isPrivate?: boolean
@@ -35,6 +36,7 @@ export default function Routes(): React.ReactElement {
       <CustomRoute isPrivate={true} path="/profile" component={Profile} />
       <CustomRoute isPrivate={true} path="/modify" component={ModifyUser} />
       <CustomRoute isPrivate={true} path="/quiz" component={Quiz} />
+      <CustomRoute isPrivate={true} path="/rank" component={Rank} />
     </Switch>
   );
 }

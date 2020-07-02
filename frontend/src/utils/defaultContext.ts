@@ -28,7 +28,8 @@ export const defaultContext: Userctx = {
     id: 0,
     username: '',
     password: '',
-    points: 0
+    points: 0,
+    time: 0,
   },
   handleModify: async (e: FormEvent, username?: string, password?: string, id?: number) => {
     await axios({

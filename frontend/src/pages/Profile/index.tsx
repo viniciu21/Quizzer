@@ -3,15 +3,10 @@ import React, { useEffect, useState, useContext } from 'react';
 import { context } from '../../context/contextAuth';
 import { Link } from 'react-router-dom';
 import { api } from '../../Api/api';
+import { User } from '../../context/contextAuth';
 
 // import { Container } from './styles';
 
-interface User {
-  id: number,
-  username: string,
-  password: string,
-  points: number
-}
 
 const Profile: React.FC = () => {
 
@@ -41,6 +36,7 @@ const Profile: React.FC = () => {
         <h1>Id :{user?.id || userAuth?.id}</h1>
         <h1>Username : {user?.username || userAuth?.username}</h1>
         <h1>Points : {user?.points || userAuth?.points}</h1>
+        <h1>Media Times : {user?.time}</h1>
       </div>
       <button onClick={handleLogout}>Sair</button>
       <br />
@@ -48,7 +44,7 @@ const Profile: React.FC = () => {
       <br />
       <Link to='/quiz'>Começar um novo quizz</Link>
       <br />
-      <Link to='/modify'>Ver ranqueamento</Link>
+      <Link to='/rank'>Ver ranqueamento</Link>
     </div>
 
   );
