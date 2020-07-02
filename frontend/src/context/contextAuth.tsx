@@ -14,6 +14,9 @@ export interface User {
   password: string,
   points: number,
   time: number,
+  hard: number,
+  medium: number,
+  easy: number,
 }
 
 export interface Quests {

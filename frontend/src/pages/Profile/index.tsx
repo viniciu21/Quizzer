@@ -21,7 +21,6 @@ const Profile: React.FC = () => {
           baseURL: "http://localhost:3333/api/auth/profile",
           method: "GET"
         })
-        console.log(data);
         setUser(data);
 
       } catch (erro) {
@@ -36,7 +35,10 @@ const Profile: React.FC = () => {
         <h1>Id :{user?.id || userAuth?.id}</h1>
         <h1>Username : {user?.username || userAuth?.username}</h1>
         <h1>Points : {user?.points || userAuth?.points}</h1>
-        <h1>Media Times : {user?.time}</h1>
+        <h1>Media Times : {user?.time || userAuth?.time}</h1>
+        <h1>Quantidade de questões acertada nivel Dificil: {user?.hard || userAuth?.hard}</h1>
+        <h1>Quantidade de questões acertada nivel Medium: {user?.medium || userAuth?.medium}</h1>
+        <h1>Quantidade de questões acertada nivel Easy: {user?.easy || userAuth?.easy}</h1>
       </div>
       <button onClick={handleLogout}>Sair</button>
       <br />

@@ -19,13 +19,15 @@ const QuizGame: React.FC = () => {
 
   const [points, setPoints] = useState(0);
 
-  const [counterMim, setCounterMim] = useState(5);
+  const [counterMim, setCounterMim] = useState(11);
 
   const [counterSec, setCounterSec] = useState(59);
 
   const [overQuestionarie, setOverQuestionarie] = useState(false);
 
   const [answers, setAnswers] = useState<string[]>([]);
+
+  const [counterDif, setCounterDif] = useState({ hard: 0, medium: 0, easy: 0, });
 
   const typeOfDifficulty = quizQuests.map(difficulty => difficulty.difficulty);
 
@@ -71,15 +73,35 @@ const QuizGame: React.FC = () => {
 
   const handleQuestionAnswer = (value: string, index: number) => {
     if (counterMim === 0 && counterSec === 0) {
-      setOverQuestionarie(true)
+      setOverQuestionarie(true);
       return;
     }
     if (value === correctAnswer[index]) {
       console.log('Acertei', typeOfDifficulty[index])
-      typeOfDifficulty[index] === 'hard' ?
-        setPoints(points + 10) : typeOfDifficulty[index] === 'medium' ?
-          setPoints(points + 5) : setPoints(points + 3);
-
+      if (typeOfDifficulty[index] === 'hard') {
+        setPoints(points + 10);
+        setCounterDif({
+          hard: counterDif.hard + 1,
+          medium: counterDif.medium,
+          easy: counterDif.easy,
+        })
+      }
+      else if (typeOfDifficulty[index] === 'medium') {
+        setPoints(points + 5);
+        setCounterDif({
+          hard: counterDif.hard,
+          medium: counterDif.medium + 1,
+          easy: counterDif.easy
+        })
+      }
+      else {
+        setPoints(points + 5);
+        setCounterDif({
+          hard: counterDif.hard,
+          medium: counterDif.medium,
+          easy: counterDif.easy + 1
+        })
+      }
       return setIndex(index + 1);
     } else {
       return setIndex(index + 1);
@@ -87,11 +109,15 @@ const QuizGame: React.FC = () => {
   }
 
   const handleSave = async () => {
+    console.log(counterDif);
     try {
       await api.put('http://localhost:3333/api/auth/saveQuiz', {
         id: userAuth?.id,
         points: points,
         time: counterMim,
+        hard: counterDif.hard,
+        medium: counterDif.medium,
+        easy: counterDif.easy,
       });
       history.push('/profile');
     } catch (erro) {
