@@ -5,8 +5,8 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
-  min-height: 100%;
+  width: 100vw;
+  min-height: 100vh;
   padding: 20px;
 `;
 
