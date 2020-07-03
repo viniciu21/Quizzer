@@ -7,9 +7,13 @@ import { context } from '../../context/contextAuth';
 import { api } from '../../Api/api';
 import history from '../../history';
 
-// import { Container } from './styles';
+import { Container, GameContainer, TextInfoContainer, QuestButtom, SaveContainer } from './styles';
 
-const QuizGame: React.FC = () => {
+interface Props {
+  timeDefault: number;
+}
+
+const QuizGame = ({ timeDefault }: Props) => {
 
   const { quizQuests, amount } = useContext(contextQuiz);
 
@@ -19,7 +23,7 @@ const QuizGame: React.FC = () => {
 
   const [points, setPoints] = useState(0);
 
-  const [counterMim, setCounterMim] = useState(11);
+  const [counterMim, setCounterMim] = useState(timeDefault - 1);
 
   const [counterSec, setCounterSec] = useState(59);
 
@@ -72,12 +76,11 @@ const QuizGame: React.FC = () => {
   }, [counterMim, counterSec]);
 
   const handleQuestionAnswer = (value: string, index: number) => {
-    if (counterMim === 0 && counterSec === 0) {
+    if (counterMim === 0 && counterSec === 0 || index === parseInt(amount) - 1) {
       setOverQuestionarie(true);
       return;
     }
     if (value === correctAnswer[index]) {
-      console.log('Acertei', typeOfDifficulty[index])
       if (typeOfDifficulty[index] === 'hard') {
         setPoints(points + 10);
         setCounterDif({
@@ -109,7 +112,6 @@ const QuizGame: React.FC = () => {
   }
 
   const handleSave = async () => {
-    console.log(counterDif);
     try {
       await api.put('http://localhost:3333/api/auth/saveQuiz', {
         id: userAuth?.id,
@@ -121,30 +123,36 @@ const QuizGame: React.FC = () => {
       });
       history.push('/profile');
     } catch (erro) {
-      console.log(erro.response);
+      history.push('/profile');
     }
   }
 
   return (
-    <div>
-      <div>
-        <span>{counterMim} :</span>
-        <span>{counterSec}</span>
-        <p>{quests[index]}</p>
-        <span>{index + 1} de : {amount}</span>
-        <span>{typeOfDifficulty[index]}</span>
-        {answers.map((value) => <button key={value}
-          onClick={() => handleQuestionAnswer(value, index)}>{value}</button>)}
-      </div>
+    <Container>
+      <GameContainer>
+        <TextInfoContainer>
+          <p>Time Left {counterMim}: {counterSec}</p>
+          <p>Your Points {points}</p>
+          <p>Category : {quizQuests[index].category}</p>
+          <p>Question {index + 1} of : {amount} with difficulty {typeOfDifficulty[index]}:</p>
+          <p>{quests[index]} </p>
+        </TextInfoContainer>
+        {answers.map((value) => <QuestButtom key={value}
+          onClick={() => handleQuestionAnswer(value, index)}>{value}</QuestButtom>)}
+      </GameContainer>
       {
         overQuestionarie ?
-          <div>
+          <SaveContainer>
             <p>Sua pontuação foi de {points}, Parabens</p>
+            <p>
+              You answer {counterDif.hard} : hard, {counterDif.medium} medium and {counterDif.easy} easy Quests
+            </p>
+            <p>Go check your position in rank</p>
             <button onClick={() => handleSave()}>salvar</button>
-          </div>
+          </SaveContainer>
           : ''
       }
-    </div>
+    </Container>
   )
 };
 

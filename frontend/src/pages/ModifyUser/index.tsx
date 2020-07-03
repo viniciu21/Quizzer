@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { context } from '../../context/contextAuth';
 
-
-// import { Container } from './styles';
+import { Container, FormContainer, Input, LoginText, ButtonSubmit } from './styles';
 
 const ModifyUser: React.FC = () => {
 
@@ -12,18 +11,21 @@ const ModifyUser: React.FC = () => {
   const { handleModify, userAuth, handleDelete } = useContext(context);
 
   return (
-    <div>
-      <form onSubmit={e => handleModify(e, username, password, userAuth?.id)}>
-        <input type="text" value={username} placeholder="Coloque seu novo Username"
-          onChange={e => setUsername(e.target.value)}
-        />
-        <input type="password" value={password} placeholder="Coloque seu novo Password"
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button type="submit">Modifique</button>
-      </form>
-      <button onClick={(e) => handleDelete(e, userAuth?.id)}>Delete</button>
-    </div>
+    <Container>
+      <FormContainer>
+        <LoginText>Modify your user</LoginText>
+        <form onSubmit={e => handleModify(e, username, password, userAuth?.id)}>
+          <Input type="text" value={username} placeholder="Coloque seu novo Username"
+            onChange={e => setUsername(e.target.value)}
+          />
+          <Input type="password" value={password} placeholder="Coloque seu novo Password"
+            onChange={e => setPassword(e.target.value)}
+          />
+          <ButtonSubmit type="submit">Modify User</ButtonSubmit>
+        </form>
+        <ButtonSubmit onClick={(e) => handleDelete(e, userAuth?.id)}>Delete This User</ButtonSubmit>
+      </FormContainer>
+    </Container>
   );
 }
 

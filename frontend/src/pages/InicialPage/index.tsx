@@ -2,8 +2,6 @@ import React from 'react';
 
 import Svg from './svg';
 
-import { Link } from 'react-router-dom';
-
 import { EntradeButtons, ButtonsContainer } from './styles';
 
 const InicialPage = () => {

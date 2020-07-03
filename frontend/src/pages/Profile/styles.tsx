@@ -1,14 +1,4 @@
-import styled, { keyframes } from 'styled-components';
-
-// const altrAfter = keyframes`
-//   0% {transform: translateX(-100%)}
-//   100% {transform: translateX(101%)}
-// `
-// const altrBefore = keyframes`
-//   0% {transform: translateX(0)}
-//   100% {transform: translateX(200%)}
-// `
-
+import styled from 'styled-components';
 
 export const Container = styled.div`
   min-height: 100%;

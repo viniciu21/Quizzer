@@ -69,10 +69,3 @@ const Wrapper = styled.div`
     }
 `;
 export default withRouter(Routes);
-
-
-// <TransitionGroup>
-{/* /  <CSSTransition key={history.location.key} timeout={{ enter: 300, exit: 300 }} classNames={'fade'}> */ }
-
-{/* </CSSTransition> */ }
-{/* </TransitionGroup> */ }

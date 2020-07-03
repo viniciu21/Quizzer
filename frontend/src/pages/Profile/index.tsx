@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 
+import history from '../../history';
+
 import { context } from '../../context/contextAuth';
 import { Link } from 'react-router-dom';
 import { api } from '../../Api/api';
@@ -25,6 +27,8 @@ const Profile: React.FC = () => {
 
       } catch (erro) {
         console.log(erro.response.data);
+        api.defaults.headers.Authorization = undefined;
+        history.push('/');
       }
     })()
   }, [])
@@ -60,15 +64,8 @@ const Profile: React.FC = () => {
           </table>
         </TblContent>
       </ContainerTable>
-
-      {/* <span>Username: {user?.username || userAuth?.username}</span>
-        <span>Points: {user?.points || userAuth?.points}</span>
-        <span>Media Times : {user?.time || userAuth?.time}</span>
-        <span>Number of questions answered at Hard level: {user?.hard || userAuth?.hard}</span>
-        <span>Number of questions answered at Medium level: {user?.medium || userAuth?.medium}</span>
-        <span>Number of questions answered at Easy level: {user?.easy || userAuth?.easy}</span> */}
       <ButtonsConteiner>
-        <a onClick={handleLogout}><span>Sair</span></a>
+        <Link to="/" onClick={handleLogout}><span>Sair</span></Link>
         <Link to='/modify'><span>Modificar Usuário</span></Link>
         <Link to='/quiz'><span>Começar um novo quizz</span></Link>
         <Link to='/rank'><span>Ver ranqueamento</span></Link>
