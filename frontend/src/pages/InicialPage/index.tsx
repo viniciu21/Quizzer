@@ -1,12 +1,19 @@
 import React from 'react';
 
+import Svg from './svg';
+
 import { Link } from 'react-router-dom';
+
+import { EntradeButtons, ButtonsContainer } from './styles';
 
 const InicialPage = () => {
   return (
     <div>
-      <Link to="/signin"> Signin</Link>
-      <Link to="/signup"> Signup</Link>
+      <Svg />
+      <ButtonsContainer>
+        <EntradeButtons to="/signin"> Signin</EntradeButtons>
+        <EntradeButtons to="/signup"> Signup</EntradeButtons>
+      </ButtonsContainer>
     </div>
   )
 }
