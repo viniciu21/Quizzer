@@ -39,12 +39,15 @@ export const signupUser = async (req: Request, resp: Response): Promise<Response
     const newUser: User = req.body;
     newUser.points = 0;
     newUser.time = 0;
+    newUser.easy = 0;
+    newUser.medium = 0;
+    newUser.hard = 0;
 
     try {
         //Ensures that the username is not repeated
         const isDuplicade = await getRepository(User).findOne({ username: newUser.username });
-        if (isDuplicade) {
-            return resp.status(400).json({ mensage: "error" });
+        if (isDuplicade || newUser.username === '' || newUser.password === '') {
+            return resp.status(400).json({ mensage: "Erro ao cadrastar" });
         }
 
         //Generates the salt and encrypts the user's password
@@ -75,9 +78,7 @@ export const signinUser = async (req: Request, resp: Response): Promise<Response
 
     const reqUser = req.body;
     const user = await getRepository(User).findOne({ username: req.body.username });
-    console.log(user || 'lala');
     if (!user) {
-        console.log('lala');
         return resp.status(400).json({ mensage: "Email or password invalid" })
     };
     const isValidPassword = await bcrypt.compare(req.body.password, user.password);
@@ -99,7 +100,6 @@ export const signinUser = async (req: Request, resp: Response): Promise<Response
 export const putUser = async (req: Request, resp: Response): Promise<Response> => {
     const user = await getRepository(User).findOne(req.params.id);
 
-    console.log(user);
     if (!user) return resp.json({ msg: 'Not user found' });
 
     const duplicatedUsername = await getRepository(User).find({ username: req.body.username });
@@ -153,8 +153,15 @@ export const getProfileForUser = async (req: Request, resp: Response) => {
 interface RequiredUser {
     id: number,
     points: number,
-    time: number
+    time: number,
+    hard: number,
+    medium: number,
+    easy: number;
 }
+
+/**
+ * Put a Points into Users.
+ */
 
 export const putPointIntoUsers = async (req: Request, resp: Response) => {
     const userRequired: RequiredUser = req.body;
@@ -165,11 +172,20 @@ export const putPointIntoUsers = async (req: Request, resp: Response) => {
 
     const newPoints = userRequired.points + user.points;
 
+    const newHard = userRequired.hard + user.hard;
+
+    const newMedium = userRequired.medium + user.medium;
+
+    const newEasy = userRequired.easy + user.easy;
+
     if (user.time === 0) {
         const newTime = userRequired.time;
         await getRepository(User).merge(user, {
             points: newPoints,
-            time: newTime
+            time: newTime,
+            hard: newHard,
+            medium: newMedium,
+            easy: newEasy
         });
 
         const results = await getRepository(User).save(user);
@@ -178,11 +194,14 @@ export const putPointIntoUsers = async (req: Request, resp: Response) => {
 
     }
 
-    const newMediaTime = Math.trunc((userRequired.time + user.time) / 2);
+    const newMediaTime = Math.ceil((userRequired.time + user.time) / 2);
 
-    await getRepository(User).merge(user, {
+    getRepository(User).merge(user, {
         points: newPoints,
-        time: newMediaTime
+        time: newMediaTime,
+        hard: newHard,
+        medium: newMedium,
+        easy: newEasy,
     });
 
     const results = await getRepository(User).save(user);

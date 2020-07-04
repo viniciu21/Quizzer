@@ -100,10 +100,12 @@ const QuizGame = ({ timeDefault }: Props) => {
    */
 
   const handleQuestionAnswer = (value: string, index: number) => {
+    //Checks if the timer has stopped
     if ((counterMim === 0 && counterSec === 0) || (index === parseInt(amount) - 1)) {
       setOverQuestionarie(true);
       return;
     }
+    //Checks the difficult of answer resolved.
     if (value === correctAnswer[index]) {
       if (typeOfDifficulty[index] === 'hard') {
         setPoints(points + 10);

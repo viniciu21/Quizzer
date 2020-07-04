@@ -20,6 +20,15 @@ class User {
 
     @Column()
     time: number;
+
+    @Column()
+    hard: number;
+
+    @Column()
+    medium: number;
+
+    @Column()
+    easy: number
 };
 
 export default User;
