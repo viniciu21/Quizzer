@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Svg from '../../components/Svg';
+import Svg from '../../components/Svg'; //For svg component
 
-import { EntradeButtons, ButtonsContainer } from './styles';
+import { EntradeButtons, ButtonsContainer } from './styles'; //Styles
 
 const InicialPage = () => {
   return (

@@ -1,13 +1,19 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+//For Hooks
+
 import QuizGame from '../../components/QuizGame';
+//For component QuizGame
+
 import { contextQuiz } from '../../context/contextQuiz';
+//For ContextQuiz,
+
 import { Container, TutorialGame, QuizzerContainer, ButtomSubmit, ContainerQuizer } from './styles';
+//Styles
 
 const Quiz: React.FC = () => {
 
-  const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
-
+  const [category, setCategory] = useState(''); //Category question.
+  const [type, setType] = useState('');//Type Question.
 
   const {
     handleQuiz,
@@ -15,9 +21,10 @@ const Quiz: React.FC = () => {
     amount,
     onlyNumbers,
     difficulty,
-    handleDifficulty } = useContext(contextQuiz);
+    handleDifficulty } = useContext(contextQuiz); //Function and state for our contextQuiz.
 
   const timeDefault = 12 * Math.floor(parseInt(amount) / 10) || 12;
+  //The that the player will have to complet the quistionarie.
 
   return (
     <Container>

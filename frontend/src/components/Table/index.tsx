@@ -2,20 +2,24 @@ import React, { useEffect, useState, useContext } from 'react';
 
 import { api } from '../../Api/api';
 
-import { User } from '../../context/contextAuth';
+import { User } from '../../context/types/types';
 
 import { context } from '../../context/contextAuth';
 
 import history from '../../history';
 
 
-import { TableUser, ContainerTable, Td, TblContent } from './styles';
+import { TableUser, ContainerTable, Td, TblContent } from './styles';//Styles.
 
 const Table: React.FC = () => {
   const [user, setUser] = useState<User>();
 
-  const { handleLogout, userAuth } = useContext(context);
+  const { userAuth } = useContext(context); //User.
 
+  /**
+   * This useEffect will get the user's information by passing his token.
+   * And then set the users for this users.
+   */
   useEffect(() => {
     (async () => {
       try {
@@ -26,13 +30,13 @@ const Table: React.FC = () => {
         setUser(data);
 
       } catch (erro) {
-        console.log(erro.response.data);
         api.defaults.headers.Authorization = undefined;
         history.push('/');
       }
     })()
   }, [])
   return (
+    // This ?. and || is to prevent any mistakes
     <ContainerTable>
       <TableUser>
         <h1>Welcome {user?.username}</h1>

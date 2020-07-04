@@ -1,16 +1,17 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react'; //Hooks
 
-import Table from '../../components/Table';
+import Table from '../../components/Table'; //For Table component
 
 import { Link } from 'react-router-dom';
 
-import { context } from '../../context/contextAuth';
+import { context } from '../../context/contextAuth'; //ContextAuth
 
-import { ButtonsConteiner, Container } from './styles';
+import { ButtonsConteiner, Container } from './styles'; //Styles
 
 const Profile: React.FC = () => {
 
   const { handleLogout } = useContext(context);
+  //For function to logout;
 
   return (
     <Container>

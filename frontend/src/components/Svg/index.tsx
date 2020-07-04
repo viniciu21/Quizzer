@@ -1,8 +1,7 @@
 import React from 'react';
 
 import './svg.css';
-
-// import { Container } from './styles';
+//For the styles of svg component, it is not a .tsx because it does not accept some svg properties.
 
 const Svg: React.FC = () => {
   return (

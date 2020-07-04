@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { context } from '../../context/contextAuth';
 
-import { Container, FormContainer, Input, LoginText, ButtonSubmit } from './styles';
+import { context } from '../../context/contextAuth'; //ContextAuth
+
+import { Container, FormContainer, Input, LoginText, ButtonSubmit } from './styles';//Styles
 
 const ModifyUser: React.FC = () => {
 
@@ -9,6 +10,7 @@ const ModifyUser: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const { handleModify, userAuth, handleDelete } = useContext(context);
+  //Function and states provides for context.
 
   return (
     <Container>

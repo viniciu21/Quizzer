@@ -1,46 +1,60 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react'; //hooks
 
 import { contextQuiz } from '../../context/contextQuiz';
 
 import { context } from '../../context/contextAuth';
 
-import { api } from '../../Api/api';
-import history from '../../history';
+import { api } from '../../Api/api'; //Instance for Auth api
+import history from '../../history'; //History routes
 
 import { Container, GameContainer, TextInfoContainer, QuestButtom, SaveContainer } from './styles';
+//Styles.
 
-interface Props {
+interface Props { //Props to left time of quiz
   timeDefault: number;
-}
+};
 
 const QuizGame = ({ timeDefault }: Props) => {
 
   const { quizQuests, amount, SetSubmited } = useContext(contextQuiz);
+  // For state and function of context.
 
   const { userAuth } = useContext(context);
+  // For user loged.
 
   const [index, setIndex] = useState(0);
+  // For question index.
 
   const [points, setPoints] = useState(0);
+  // Points of user
 
   const [counterMim, setCounterMim] = useState(timeDefault - 1);
 
   const [counterSec, setCounterSec] = useState(59);
 
   const [overQuestionarie, setOverQuestionarie] = useState(false);
+  // For if the questionarie is over.
 
   const [answers, setAnswers] = useState<string[]>([]);
+  // Quests of questionarie
 
   const [counterDif, setCounterDif] = useState({ hard: 0, medium: 0, easy: 0, });
+  // Questions by difficulty.
 
   const typeOfDifficulty = quizQuests.map(difficulty => difficulty.difficulty);
+  // Type of difficulty by question.
 
   const wrongQuests = quizQuests.map(wrong => wrong.incorrect_answers);
 
   const correctAnswer = quizQuests.map(correct => correct.correct_answer);
 
   const quests = quizQuests.map(quest => quest.question.replace(/&.+?;/g, ' '));
+  // Quests of the game, o replace vai corrigir o erro do json que vem da api com alguns &quots; .
 
+  /*
+  * This useEffect will set the index for the next question
+  * if the time is not over or the questions are not over
+  */
   useEffect(() => {
     if (index === parseInt(amount)) {
       setIndex(parseInt(amount) - 1)
@@ -55,6 +69,10 @@ const QuizGame = ({ timeDefault }: Props) => {
     }
     return;
   }, [index]);
+
+  /**
+  * This useEffect is our counter.
+  */
 
   useEffect(() => {
     const TimeCounter = () => {
@@ -74,6 +92,12 @@ const QuizGame = ({ timeDefault }: Props) => {
     const interval = setInterval(TimeCounter, 1000);
     return () => clearInterval(interval);
   }, [counterMim, counterSec]);
+
+  /**
+   *  This function will add the score for the difficulty of
+   * the question and add to the difficult counter, and then
+   * call the next question,
+   */
 
   const handleQuestionAnswer = (value: string, index: number) => {
     if ((counterMim === 0 && counterSec === 0) || (index === parseInt(amount) - 1)) {
@@ -110,6 +134,11 @@ const QuizGame = ({ timeDefault }: Props) => {
       return setIndex(index + 1);
     }
   }
+
+  /**
+   * This question will save our points into user in database,
+   * and then redirect the user to profile page.
+   */
 
   const handleSave = async () => {
     try {

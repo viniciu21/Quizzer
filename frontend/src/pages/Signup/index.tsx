@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react'; //Hooks
 
+import { context } from '../../context/contextAuth'; //ContextAuth
 
-import { context } from '../../context/contextAuth';
-
-import { Container, FormContainer, LoginText, Input, ErroMensage } from '../Signin/styles';
+import { Container, FormContainer, LoginText, Input, ErroMensage } from '../Signin/styles'; //Styles
 
 const Signup = () => {
 
@@ -11,25 +10,25 @@ const Signup = () => {
 
   const [password, setPassword] = useState('');
 
-  const { handleAuth, mensage } = useContext(context);
+  const { handleAuth, mensage } = useContext(context); //Function and state of our context.
 
   return (
     <Container>
       <FormContainer>
-        <LoginText> Cadrastar </LoginText>
+        <LoginText> Signup </LoginText>
         <form onSubmit={(e) => {
           handleAuth(e, "signup", username, password);
           setPassword('');
           setUsername('');
         }}>
-          <Input type="text" placeholder="Bote um username..."
+          <Input type="text" placeholder="Put a username..."
             value={username}
             onChange={e => setUsername(e.target.value)}
           />
-          <Input type="password" placeholder="Coloque uma senha..."
+          <Input type="password" placeholder="Put a password"
             value={password} onChange={e => setPassword(e.target.value)}
           />
-          <Input type="submit" value="Click para cadrastar" />
+          <Input type="submit" value="Click to signup" />
         </form>
         <ErroMensage>{mensage}</ErroMensage>
       </FormContainer>

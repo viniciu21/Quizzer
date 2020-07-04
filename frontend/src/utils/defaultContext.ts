@@ -1,10 +1,10 @@
-import history from '../history';
-import axios from 'axios';
-import { FormEvent } from 'react';
-import { Userctx } from '../context/contextAuth';
+import { Userctx } from '../context/types/types'; //Type of user context.
+
+/**
+ * The innitial value for ours state and function of context Auth.
+ */
 
 export const defaultContext: Userctx = {
-
   isAuth: undefined,
   loading: undefined,
   mensage: undefined,

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; //For hooks
 
-import { User } from '../../context/contextAuth';
+import { User } from '../../context/types/types'; //Type of User
 
-import { api } from '../../Api/api';
+import { api } from '../../Api/api'; //Api
 
-import {
+import { //For styles
   Container,
   PodiumContainer,
   PodiumTitle,
@@ -16,7 +16,7 @@ import {
   UsersContainer,
 } from './styles';
 
-const defaultUser: User[] = [{
+const defaultUser: User[] = [{//This will be the default user in case of any error in obtaining the same
   username: "UserDefault",
   id: 0,
   password: "",
@@ -25,11 +25,16 @@ const defaultUser: User[] = [{
   easy: 0,
   medium: 0,
   hard: 0
-}]
+}];
+
 
 const Rank: React.FC = () => {
 
   const [users, setUsers] = useState<User[]>(defaultUser);
+
+  /**
+   * To get the information of users.
+   */
 
   useEffect(() => {
     (async () => {
@@ -37,6 +42,12 @@ const Rank: React.FC = () => {
       setUsers(data);
     })()
   }, [])
+
+  /**
+   * These constants and sort functions are for us to organize users
+   * by the number of questions settled by level,
+   * difficulty and time average.
+   */
 
   const byDiffHard = [...users];
 
