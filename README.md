@@ -31,7 +31,7 @@
 
 Porêm, se quiser apenas ver o app, vou por alguns Gifs dele em uso por mim.
 
-> Me desculpem a qualidade dos gifs mas eu nãp consegui deixar melhor que isso.  
+> Me desculpem a qualidade dos gifs mas eu não consegui deixar melhor que isso.  
 
 Primeiro vem a tela inicial: 
 
