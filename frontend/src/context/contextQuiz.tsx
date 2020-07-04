@@ -12,6 +12,7 @@ export interface Quizctx {
   handleQuiz(event: FormEvent, category: string, amount: string, difficulty: string, type: string): Promise<void>,
   onlyNumbers(e: ChangeEvent<HTMLInputElement>): void,
   handleDifficulty(e: ChangeEvent<HTMLSelectElement>): void,
+  SetSubmited(): void;
 }
 
 export interface Quests {
@@ -35,6 +36,10 @@ export const ContextQuizProvider: React.FC = ({ children }) => {
 
   const [difficulty, setDifficulty] = useState('');
 
+
+  const SetSubmited = () => {
+    setIsSubmited(false);
+  }
 
   const handleQuiz = async (e: FormEvent, category: string, amount: string, difficulty: string, type: string) => {
     const chefParams = {
@@ -74,7 +79,8 @@ export const ContextQuizProvider: React.FC = ({ children }) => {
   return (
     <contextQuiz.Provider value={{
       quizQuests, isSubmited, handleQuiz,
-      onlyNumbers, amount, difficulty, handleDifficulty
+      onlyNumbers, amount, difficulty, handleDifficulty,
+      SetSubmited
     }}>
       {children}
     </contextQuiz.Provider>

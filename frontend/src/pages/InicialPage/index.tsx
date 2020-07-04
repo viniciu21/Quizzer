@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Svg from './svg';
+import Svg from '../../components/Svg';
 
 import { EntradeButtons, ButtonsContainer } from './styles';
 

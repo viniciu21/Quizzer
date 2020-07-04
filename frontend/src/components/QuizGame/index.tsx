@@ -15,7 +15,7 @@ interface Props {
 
 const QuizGame = ({ timeDefault }: Props) => {
 
-  const { quizQuests, amount } = useContext(contextQuiz);
+  const { quizQuests, amount, SetSubmited } = useContext(contextQuiz);
 
   const { userAuth } = useContext(context);
 
@@ -39,7 +39,7 @@ const QuizGame = ({ timeDefault }: Props) => {
 
   const correctAnswer = quizQuests.map(correct => correct.correct_answer);
 
-  const quests = quizQuests.map(quest => quest.question);
+  const quests = quizQuests.map(quest => quest.question.replace(/&.+?;/g, ' '));
 
   useEffect(() => {
     if (index === parseInt(amount)) {
@@ -48,8 +48,8 @@ const QuizGame = ({ timeDefault }: Props) => {
       return;
     }
     if (overQuestionarie === false) {
-      const answer = wrongQuests[index].map(value => value);
-      answer.push(correctAnswer[index])
+      const answer = wrongQuests[index].map(value => value.replace(/&.+?;/g, 'lala'));
+      answer.push(correctAnswer[index].replace(/&.+?;/g, 'lala'));
       const sortedAnswers = answer.sort(() => Math.random() - .5);
       setAnswers(sortedAnswers);
     }
@@ -76,7 +76,7 @@ const QuizGame = ({ timeDefault }: Props) => {
   }, [counterMim, counterSec]);
 
   const handleQuestionAnswer = (value: string, index: number) => {
-    if (counterMim === 0 && counterSec === 0 || index === parseInt(amount) - 1) {
+    if ((counterMim === 0 && counterSec === 0) || (index === parseInt(amount) - 1)) {
       setOverQuestionarie(true);
       return;
     }
@@ -121,6 +121,7 @@ const QuizGame = ({ timeDefault }: Props) => {
         medium: counterDif.medium,
         easy: counterDif.easy,
       });
+      SetSubmited();
       history.push('/profile');
     } catch (erro) {
       history.push('/profile');
@@ -137,13 +138,15 @@ const QuizGame = ({ timeDefault }: Props) => {
           <p>Question {index + 1} of : {amount} with difficulty {typeOfDifficulty[index]}:</p>
           <p>{quests[index]} </p>
         </TextInfoContainer>
-        {answers.map((value) => <QuestButtom key={value}
-          onClick={() => handleQuestionAnswer(value, index)}>{value}</QuestButtom>)}
+        {answers.map((value) =>
+          <QuestButtom key={value} onClick={() => handleQuestionAnswer(value, index)}>{value}
+          </QuestButtom>)
+        }
       </GameContainer>
       {
         overQuestionarie ?
           <SaveContainer>
-            <p>Sua pontuação foi de {points}, Parabens</p>
+            <p>His score was {points}, congratulations</p>
             <p>
               You answer {counterDif.hard} : hard, {counterDif.medium} medium and {counterDif.easy} easy Quests
             </p>

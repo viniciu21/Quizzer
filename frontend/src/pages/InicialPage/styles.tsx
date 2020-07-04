@@ -11,15 +11,13 @@ export const ButtonsContainer = styled.div`
 `;
 
 export const EntradeButtons = styled(Link)`
-    background: #bbff00;
-    color: #2b2bff;
+    background: black;
+    color: white;
     cursor: pointer;
     font-size: 1.5em;
     padding: 1.0rem;
-    /* border: 0; */
     transition: all 0.5s;
     border-radius: 10px;
-    /* width: auto; */
     position: relative;
     min-width: 100px;
     margin-left: 10px;
@@ -41,16 +39,9 @@ export const EntradeButtons = styled(Link)`
     padding: 1.5rem 3rem 1.5rem 1.5rem;
     color: #ffffff;
     &::after {
-        opacity: 1;
-        transition: all 0.5s;
-        color: #ffffff;
-      }
+      opacity: 1;
+      transition: all 0.5s;
+      color: #ffffff;
+    }
   }
-
 `;
-
-// 😎
-
-// 2b2bff
-
-// bbff00

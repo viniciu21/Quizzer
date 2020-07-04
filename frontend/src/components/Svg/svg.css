@@ -1,9 +1,17 @@
 svg {
   display: block;
-  font: 10.5em 'Montserrat';
+  font: 9.5em 'Montserrat';
   width: 960px;
   height: 300px;
   margin: 0 auto;
+}
+
+@media (max-width: 882px) {
+  svg {
+    font-size: 8.5em;
+    width: 500px;
+    height: 200px;
+  }
 }
 
 .text-copy {

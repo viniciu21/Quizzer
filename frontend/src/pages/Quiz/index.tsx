@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import QuizGame from '../../components/QuizGame';
 import { contextQuiz } from '../../context/contextQuiz';
 import { Container, TutorialGame, QuizzerContainer, ButtomSubmit, ContainerQuizer } from './styles';
@@ -9,7 +9,13 @@ const Quiz: React.FC = () => {
   const [type, setType] = useState('');
 
 
-  const { handleQuiz, isSubmited, amount, onlyNumbers, difficulty, handleDifficulty } = useContext(contextQuiz);
+  const {
+    handleQuiz,
+    isSubmited,
+    amount,
+    onlyNumbers,
+    difficulty,
+    handleDifficulty } = useContext(contextQuiz);
 
   const timeDefault = 12 * Math.floor(parseInt(amount) / 10) || 12;
 

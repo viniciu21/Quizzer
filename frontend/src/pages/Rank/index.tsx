@@ -17,7 +17,7 @@ import {
 } from './styles';
 
 const defaultUser: User[] = [{
-  username: "marcelo",
+  username: "UserDefault",
   id: 0,
   password: "",
   points: 0,
@@ -56,48 +56,48 @@ const Rank: React.FC = () => {
 
   byPoints.sort((user1, user2) => user2.points - user1.points);
 
-  byTime?.sort((user1, user2) => user1.time - user2.time);
+  byTime.sort((user1, user2) => user1.time - user2.time);
 
   return (
     <Container>
       <PodiumContainer>
         <PodiumTitle>
-          <p>Os Quantidade de respostas acertadas por dificuldade</p>
+          <p>Podium of questions by difficulty</p>
         </PodiumTitle>
         <Podium>
           <GoldMedal>
             <i className="fa fa-trophy" />
-            Ouro User: {byDiffHard[0].username} Quantidade: {byDiffHard[0].hard}
+            User: {byDiffHard[0].username}, amount of hard questions: {byDiffHard[0].hard}
           </GoldMedal>
           <SilverMedal>
             <i className="fa fa-trophy" />
-            Prata User: {byDiffMedium[0].username} Quantidade: {byDiffMedium[0].medium}
+            Prata User: {byDiffMedium[0].username}, Amount of medium questions: {byDiffMedium[0].medium}
           </SilverMedal>
 
           <BronzeMedal>
             <i className="fa fa-trophy" />
-            Bronze User: {byDiffEasy[0].username} Quantidade: {byDiffEasy[0].easy}
+            Bronze User: {byDiffEasy[0].username}, amount of easy questions: {byDiffEasy[0].easy}
           </BronzeMedal>
         </Podium>
       </PodiumContainer>
       <RankingContaine>
         <UsersContainer>
-          <p>Ranqueado por pontuação</p>
+          <p>Ranked by score</p>
           {
             byPoints.map((user) =>
               <div key={user.username}>
                 <h4>User: {user.username}</h4>
-                <span>Points: {user.points}{user.points >= 200 ? 'Ouro' : user.points >= 100 && user.points <= 200 ? 'Prata' : "Bronze"}</span>
+                <span>Points: {user.points}{user.points >= 200 ? ' Gold' : user.points >= 100 && user.points <= 200 ? ' Silver' : ' Bronze'}</span>
               </div>)
           }
         </UsersContainer>
         <UsersContainer>
-          <p>Os mais rapidos (Media de tempo por Quizz)</p>
+          <p>The fastest</p>
           {
             byTime.map((user) =>
               <div key={user.username}>
                 <h4>User: {user.username}</h4>
-                <span>Time: {user.time}{user.time <= 5 ? 'Ouro' : user.time <= 10 && user.time > 5 ? 'Prata' : "Bronze"}</span>
+                <span>Time: {user.time}{user.time <= 5 ? ' Gold' : user.time <= 10 && user.time > 5 ? ' Silver' : " Bronze"}</span>
               </div>)
           }
         </UsersContainer>

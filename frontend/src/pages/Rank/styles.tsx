@@ -70,7 +70,7 @@ export const RankingContaine = styled.div`
 `;
 
 export const UsersContainer = styled.div`
-  width: 30vw;
+  width: 400px;
   background-color: rgba(255,255,255, 0.5);
   padding: 10px;
   display: flex;
