@@ -4,7 +4,17 @@ import { User } from '../../context/contextAuth';
 
 import { api } from '../../Api/api';
 
-// import { Container } from './styles';
+import {
+  Container,
+  PodiumContainer,
+  PodiumTitle,
+  Podium,
+  GoldMedal,
+  SilverMedal,
+  BronzeMedal,
+  RankingContaine,
+  UsersContainer,
+} from './styles';
 
 const defaultUser: User[] = [{
   username: "marcelo",
@@ -49,34 +59,50 @@ const Rank: React.FC = () => {
   byTime?.sort((user1, user2) => user1.time - user2.time);
 
   return (
-    <div>
-      <div>
-        <p>Ranqueado por pontuação (independente do nivel das questões)</p>
-        {
-          byPoints.map((user) =>
-            <div key={user.username}>
-              <p>User: {user.username}</p>
-              <p>Points: {user.points}{user.points >= 200 ? 'Ouro' : user.points >= 100 && user.points <= 200 ? 'Prata' : "Bronze"}</p>
-            </div>)
-        }
-      </div>
-      <div>
-        <p>Os mais rapidos (Media de tempo por Quizz)</p>
-        {
-          byTime.map((user) =>
-            <div key={user.username}>
-              <p>User: {user.username}</p>
-              <p>Time: {user.time}{user.time <= 5 ? 'Ouro' : user.time <= 10 && user.time > 5 ? 'Prata' : "Bronze"}</p>
-            </div>)
-        }
-      </div>
-      <div>
-        <p>Os Quantidade de respostas acertadas por dificuldade</p>
-        <p>Ouro User: {byDiffHard[0].username} Quantidade: {byDiffHard[0].hard} </p>
-        <p>Prata User: {byDiffMedium[0].username} Quantidade: {byDiffMedium[0].medium} </p>
-        <p>Bronze User: {byDiffEasy[0].username} Quantidade: {byDiffEasy[0].easy} </p>
-      </div>
-    </div>
+    <Container>
+      <PodiumContainer>
+        <PodiumTitle>
+          <p>Os Quantidade de respostas acertadas por dificuldade</p>
+        </PodiumTitle>
+        <Podium>
+          <GoldMedal>
+            <i className="fa fa-trophy" />
+            Ouro User: {byDiffHard[0].username} Quantidade: {byDiffHard[0].hard}
+          </GoldMedal>
+          <SilverMedal>
+            <i className="fa fa-trophy" />
+            Prata User: {byDiffMedium[0].username} Quantidade: {byDiffMedium[0].medium}
+          </SilverMedal>
+
+          <BronzeMedal>
+            <i className="fa fa-trophy" />
+            Bronze User: {byDiffEasy[0].username} Quantidade: {byDiffEasy[0].easy}
+          </BronzeMedal>
+        </Podium>
+      </PodiumContainer>
+      <RankingContaine>
+        <UsersContainer>
+          <p>Ranqueado por pontuação</p>
+          {
+            byPoints.map((user) =>
+              <div key={user.username}>
+                <h4>User: {user.username}</h4>
+                <span>Points: {user.points}{user.points >= 200 ? 'Ouro' : user.points >= 100 && user.points <= 200 ? 'Prata' : "Bronze"}</span>
+              </div>)
+          }
+        </UsersContainer>
+        <UsersContainer>
+          <p>Os mais rapidos (Media de tempo por Quizz)</p>
+          {
+            byTime.map((user) =>
+              <div key={user.username}>
+                <h4>User: {user.username}</h4>
+                <span>Time: {user.time}{user.time <= 5 ? 'Ouro' : user.time <= 10 && user.time > 5 ? 'Prata' : "Bronze"}</span>
+              </div>)
+          }
+        </UsersContainer>
+      </RankingContaine>
+    </Container>
   );
 }
 

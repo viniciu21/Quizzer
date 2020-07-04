@@ -12,7 +12,7 @@ export const ButtonsContainer = styled.div`
 
 export const EntradeButtons = styled(Link)`
     background: #bbff00;
-    color: #1d1d1d;
+    color: #2b2bff;
     cursor: pointer;
     font-size: 1.5em;
     padding: 1.0rem;
@@ -34,17 +34,23 @@ export const EntradeButtons = styled(Link)`
         transform: translate(-50%, -50%);
   }
   &:hover {
-      background: #2b2bff;
-      transition: all 0.5s;
-      border-radius: 10px;
-      box-shadow: 0px 6px 15px #0000ff61;
-      padding: 1.5rem 3rem 1.5rem 1.5rem;
-      color: #ffffff;
-      &::after {
-          opacity: 1;
-          transition: all 0.5s;
-          color: #ffffff;
-        }
-    }
+    background:#2b2bff;
+    transition: all 0.5s;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px #0000ff61;
+    padding: 1.5rem 3rem 1.5rem 1.5rem;
+    color: #ffffff;
+    &::after {
+        opacity: 1;
+        transition: all 0.5s;
+        color: #ffffff;
+      }
+  }
 
-`
+`;
+
+// 😎
+
+// 2b2bff
+
+// bbff00

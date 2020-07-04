@@ -1,41 +1,52 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  min-height: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
   display:flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
 `;
 
 export const ContainerTable = styled.div`
-  min-width: 50%;
-  padding: 10px;
+  min-width: 50vw;
+  padding: 40px;
 `
 
 export const TableUser = styled.div`
   h1{
     font-size: 2em;
-    color: #fff;
+    color: black;
     text-transform: uppercase;
     font-weight: 900;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   }
   table{
     width:100%;
     table-layout: fixed;
   }
   &:nth-child(1){
-    background-color: rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.8);
     th{
       padding: 20px 15px;
       text-align: left;
       font-weight: 900;
       font-size: 1.1rem;
-      color: #fff;
+      color: black;
       text-transform: uppercase;
+    }
+  }
+  @media (max-width: 548px) {
+    h1{
+      font-size: 1.5rem;
+    }
+    &:nth-child(1){
+      th{
+        font-size: 0.7em;
+      }
     }
   }
 `;
@@ -46,29 +57,27 @@ export const Td = styled.td`
   vertical-align: middle;
   font-weight: 900;
   font-size: 1rem;
-  color: white;
-  border-bottom: solid 2px rgba(255,255,255,0.5);
-
-`
+  color: black;
+  border-bottom: solid 2px rgba(255,255,255,0.9);
+`;
 
 export const TblContent = styled.div`
   height:100px;
   overflow-x:auto;
   margin-top: 0px;
-  border: 1px solid rgba(255,255,255,0.3);
+  /* background-color: black; */
+  border: 1px solid rgba(24, 207, 226);
   table{
     width:100%;
     table-layout: fixed;
   }
-`
-
-
+`;
 
 export const ButtonsConteiner = styled.div`
   width: 60vw;
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   flex-wrap: wrap;
   a{
     margin: 20px auto;
@@ -76,14 +85,12 @@ export const ButtonsConteiner = styled.div`
 	  padding: 10px 24px;
 	  font-size: 20px;
     position: relative;
-    /* background-color: rgb(50, 227, 220); */
-    /* border-radius:50px; */
     &::before{
       transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       content: '';
       width: 50%;
       height: 100%;
-      background:blueviolet;
+      background:black;
       position: absolute;
       top: 0;
       left: 0;
@@ -91,12 +98,13 @@ export const ButtonsConteiner = styled.div`
     }
     & > span{
       color: white;
-      mix-blend-mode: screen;
+      mix-blend-mode:difference;
       cursor: pointer;
     }
     &:hover{
 		  &::before{
-			  background: blueviolet;
+        color:white;
+			  background: black;
 		    width: 100%;
 	    }
 	  }

@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import 'font-awesome/css/font-awesome.min.css';
 
 export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Muli:wght@300&display=swap');
